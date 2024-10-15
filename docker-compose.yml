@@ -6,10 +6,10 @@ services:
     image: mysql:8.0
     container_name: mysql_container
     environment:
-      MYSQL_ROOT_PASSWORD: 123
-      MYSQL_DATABASE: discharge
-      MYSQL_USER: joao
-      MYSQL_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
     ports:
       - "3306:3306"
     volumes:
@@ -27,7 +27,7 @@ services:
       /bin/sh -c "
       apk add --no-cache git && 
       git clone https://github.com/Grupo-5-High-Five/Backend.git . && 
-      ./mvnw package &&
+      rm -rf .git &&  
       java -jar target/conexao-banco-de-dados-1.0-SNAPSHOT-jar-with-dependencies.jar"
     ports:
       - "5555:5555"
@@ -40,17 +40,18 @@ services:
     container_name: node_container
     environment:
       DB_HOST: db
-      DB_DATABASE: discharge
-      DB_USER: joao
-      DB_PASSWORD: 123
-      DB_PORT: 3306
-      APP_PORT: 3333
-      APP_HOST: localhost
+      DB_DATABASE:
+      DB_USER:
+      DB_PASSWORD:
+      DB_PORT:
+      APP_PORT:
+      APP_HOST:
     working_dir: /app
     command: >
       /bin/sh -c "
       apk add --no-cache git && 
       git clone https://github.com/Grupo-5-High-Five/projeto-discharge.git . && 
+      rm -rf .git && 
       npm install && 
       npm start"
     ports:
