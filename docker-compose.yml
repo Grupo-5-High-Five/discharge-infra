@@ -6,21 +6,20 @@ services:
     image: mysql:8.0
     container_name: mysql_container
     environment:
-      MYSQL_ROOT_PASSWORD: 
+      MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE: 
       MYSQL_USER: 
       MYSQL_PASSWORD: 
-    ports: 
+    ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
   # Java
   backend:
-    image: openjdk:17
     container_name: java_container
     environment:
       AWS_ACCESS_KEY_ID: 
-      AWS_SECRET_ACCESS_KEY: 
+      AWS_SECRET_ACCESS_KEY:
       aws_session_token: 
     build:
       context: ./dockerfiles/backend
@@ -31,7 +30,6 @@ services:
       - db
   # Node.js
   frontend:
-    image: node:18
     container_name: node_container
     build:
       context: ./dockerfiles/frontend
@@ -42,4 +40,4 @@ services:
       - db
 
 volumes:
-  db_data:    
+  db_data:
