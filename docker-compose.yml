@@ -6,29 +6,33 @@ services:
     image: mysql:8.0
     container_name: mysql_container
     environment:
-      MYSQL_ROOT_PASSWORD:
-      MYSQL_DATABASE:
-      MYSQL_USER:
-      MYSQL_PASSWORD:
+      MYSQL_ROOT_PASSWORD: 123 # Alterar
+      MYSQL_DATABASE: discharge 
+      MYSQL_USER: luz # Alterar
+      MYSQL_PASSWORD: 123 # Alterar
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   # Java
   backend:
-    image: openjdk:17-alpine
+    image: eclipse-temurin:21-jdk-alpine
     container_name: java_container
     environment:
-      AWS_ACCESS_KEY_ID:
-      AWS_SECRET_ACCESS_KEY:
-      aws_session_token:
+      DB_URL: jdbc:mysql://db/discharge 
+      DB_USER: luz # Alterar
+      DB_PASSWORD: 123 # Alterar
+      AWS_ACCESS_KEY_ID: # Alterar
+      AWS_SECRET_ACCESS_KEY: # Alterar
+      AWS_SESSION_TOKEN: # Alterar
     working_dir: /app
     command: >
       /bin/sh -c "
-      apk add --no-cache git && 
-      git clone https://github.com/Grupo-5-High-Five/Backend.git . && 
-      rm -rf .git &&  
-      java -jar target/conexao-banco-de-dados-1.0-SNAPSHOT-jar-with-dependencies.jar"
+      apk add --no-cache git &&
+      git clone https://github.com/Grupo-5-High-Five/Backend.git . &&
+      rm -rf .git &&
+      java -jar target/discharge-1.0-SNAPSHOT-jar-with-dependencies.jar"
     ports:
       - "5555:5555"
     depends_on:
@@ -40,19 +44,19 @@ services:
     container_name: node_container
     environment:
       DB_HOST: db
-      DB_DATABASE:
-      DB_USER:
-      DB_PASSWORD:
-      DB_PORT:
-      APP_PORT:
-      APP_HOST:
+      DB_DATABASE: discharge
+      DB_USER: luz # Alterar
+      DB_PASSWORD: 123 # Alterar
+      DB_PORT: 3306
+      APP_PORT: 3333
+      APP_HOST: localhost
     working_dir: /app
     command: >
       /bin/sh -c "
-      apk add --no-cache git && 
-      git clone https://github.com/Grupo-5-High-Five/projeto-discharge.git . && 
-      rm -rf .git && 
-      npm install && 
+      apk add --no-cache git &&
+      git clone https://github.com/Grupo-5-High-Five/projeto-discharge.git . &&
+      rm -rf .git &&
+      npm install &&
       npm start"
     ports:
       - "3333:3333"
