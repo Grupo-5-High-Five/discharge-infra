@@ -6,24 +6,29 @@ services:
     image: mysql:8.0
     container_name: mysql_container
     environment:
-      MYSQL_ROOT_PASSWORD:
-      MYSQL_DATABASE:
-      MYSQL_USER:
-      MYSQL_PASSWORD:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: discharge
+      MYSQL_USER: joao
+      MYSQL_PASSWORD: 123
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
   # Java
   backend:
+    image: openjdk:17-alpine
     container_name: java_container
     environment:
       AWS_ACCESS_KEY_ID:
       AWS_SECRET_ACCESS_KEY:
       aws_session_token:
-    build:
-      context: ./dockerfiles/backend
-      dockerfile: Dockerfile
+    working_dir: /app
+    command: >
+      /bin/sh -c "
+      apk add --no-cache git && 
+      git clone https://github.com/Grupo-5-High-Five/Backend.git . && 
+      ./mvnw package &&
+      java -jar target/conexao-banco-de-dados-1.0-SNAPSHOT-jar-with-dependencies.jar"
     ports:
       - "5555:5555"
     depends_on:
@@ -31,18 +36,23 @@ services:
     restart: always
   # Node.js
   frontend:
+    image: node:20.18.0-alpine
     container_name: node_container
     environment:
-      DB_HOST:
-      DB_DATABASE:
-      DB_USER:
-      DB_PASSWORD:
-      DB_PORT:
-      APP_PORT:
-      APP_HOST:
-    build:
-      context: ./dockerfiles/frontend
-      dockerfile: Dockerfile
+      DB_HOST: db
+      DB_DATABASE: discharge
+      DB_USER: joao
+      DB_PASSWORD: 123
+      DB_PORT: 3306
+      APP_PORT: 3333
+      APP_HOST: localhost
+    working_dir: /app
+    command: >
+      /bin/sh -c "
+      apk add --no-cache git && 
+      git clone https://github.com/Grupo-5-High-Five/projeto-discharge.git . && 
+      npm install && 
+      npm start"
     ports:
       - "3333:3333"
     depends_on:
