@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Mysql
@@ -7,9 +7,9 @@ services:
     container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD:
-      MYSQL_DATABASE: 
-      MYSQL_USER: 
-      MYSQL_PASSWORD: 
+      MYSQL_DATABASE:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
     ports:
       - "3306:3306"
     volumes:
@@ -18,9 +18,9 @@ services:
   backend:
     container_name: java_container
     environment:
-      AWS_ACCESS_KEY_ID: 
+      AWS_ACCESS_KEY_ID:
       AWS_SECRET_ACCESS_KEY:
-      aws_session_token: 
+      aws_session_token:
     build:
       context: ./dockerfiles/backend
       dockerfile: Dockerfile
@@ -28,6 +28,7 @@ services:
       - "5555:5555"
     depends_on:
       - db
+    restart: always
   # Node.js
   frontend:
     container_name: node_container
@@ -38,6 +39,7 @@ services:
       - "3333:3333"
     depends_on:
       - db
+    restart: always
 
 volumes:
   db_data:
