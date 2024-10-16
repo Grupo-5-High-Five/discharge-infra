@@ -7,7 +7,7 @@ services:
     container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: 123 # Alterar
-      MYSQL_DATABASE: discharge 
+      MYSQL_DATABASE: discharge
       MYSQL_USER: luz # Alterar
       MYSQL_PASSWORD: 123 # Alterar
     ports:
@@ -20,7 +20,7 @@ services:
     image: eclipse-temurin:21-jdk-alpine
     container_name: java_container
     environment:
-      DB_URL: jdbc:mysql://db/discharge 
+      DB_URL: jdbc:mysql://ip_publico_ec2/discharge # Alterar
       DB_USER: luz # Alterar
       DB_PASSWORD: 123 # Alterar
       AWS_ACCESS_KEY_ID: # Alterar
