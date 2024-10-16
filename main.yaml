@@ -1,0 +1,88 @@
+Resources:
+  EC2Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: "10.0.0.0/16"
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+
+  EC2Subnet:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref EC2Vpc
+      CidrBlock: "10.0.1.0/24"
+      AvailabilityZone: !Select [0, !GetAZs ""]
+    DependsOn: EC2Vpc
+
+  EC2InternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+
+  EC2GatewayAttachment:
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties:
+      VpcId: !Ref EC2Vpc
+      InternetGatewayId: !Ref EC2InternetGateway
+    DependsOn:
+      - EC2Vpc
+      - EC2InternetGateway
+
+  EC2RouteTable:
+    Type: "AWS::EC2::RouteTable"
+    Properties:
+      VpcId: !Ref EC2Vpc
+
+  EC2Route:
+    Type: "AWS::EC2::Route"
+    Properties:
+      RouteTableId: !Ref EC2RouteTable
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref EC2InternetGateway
+
+  EC2SubnetRouteTableAssociation:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      SubnetId: !Ref EC2Subnet
+      RouteTableId: !Ref EC2RouteTable
+
+  EC2Instancia:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0c55b159cbfafe1f0
+      KeyName: ChaveSSH # Alterar
+      SecurityGroups:
+        - !Ref EC2GrupoSeguranca
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 20
+      Tags:
+        - Key: Name
+          Value: discharge-ec2-aws
+      SubnetId: !Ref EC2Subnet
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          SubnetId: !Ref EC2Subnet
+
+  EC2GrupoSeguranca:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: Acesso liberado para SSH e portas do projeto Discharge
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: "22"
+          ToPort: "22"
+          CidrIp: "0.0.0.0/0"
+        - IpProtocol: tcp
+          FromPort: "3333"
+          ToPort: "3333"
+          CidrIp: "0.0.0.0/0"
+        - IpProtocol: tcp
+          FromPort: "3306"
+          ToPort: "3306"
+          CidrIp: "0.0.0.0/0"
+        - IpProtocol: tcp
+          FromPort: "5555"
+          ToPort: "5555"
+          CidrIp: "0.0.0.0/0"
