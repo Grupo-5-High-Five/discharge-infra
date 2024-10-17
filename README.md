@@ -30,7 +30,7 @@ Este repositório contém as configurações para implantar a infraestrutura uti
 
 O Docker compose está sendo utilizado para criação de 3 containers
 
-mysql_container 
+mysql_container
 
 Criando o banco de dados a partir do arquivo init.sql(que contém o esquema do banco de dados MySQL) e o usuário que realiza as manipulações dentro do banco de dados
 
@@ -55,7 +55,7 @@ java_container
 Realiza a execução da aplicação em Java, utilizando o usuário do banco de dados criado pelo mysql_container - Acessando a AWS para leitura de arquivos dentro do S3 e às inserindo no banco de dados
 
 ```
-    backend:
+  backend:
     image: eclipse-temurin:21-jdk-alpine
     container_name: java_container
     environment:
@@ -84,11 +84,11 @@ node_container
 Roda a aplicação Web com o NodeJS e visualiza informações vindas do banco de dados
 
 ```
-frontend:
+  frontend:
     image: node:20.18.0-alpine
     container_name: node_container
     environment:
-      AMBIENTE_PROCESSO: 
+      AMBIENTE_PROCESSO:
       DB_HOST: db
       DB_DATABASE: discharge
       DB_USER: db_user
@@ -112,7 +112,7 @@ frontend:
 ## Configuração do CloudFormation
 
 No arquivo main.yaml é possível visualizar as configurações necessárias para que o projeto seja executado na AWS. Dessa forma, é automatizado a criação da EC2 e suas demais configurações.
-*Necessário apenas a criação de uma pilha(stack)
+\*Necessário apenas a criação de uma pilha(stack)
 
 EC2 (Definições de Hardware e Acesso)
 
