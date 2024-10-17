@@ -1,4 +1,11 @@
+# Parâmetro com o nome da Chave de Acesso a EC2
+Parameters:
+  KeyName:
+    Description: "Insira a chave de acesso:"
+    Type: String
+
 Resources:
+  # Criação e configuração de rede VPC
   EC2Vpc:
     Type: AWS::EC2::VPC
     Properties:
@@ -7,68 +14,45 @@ Resources:
       EnableDnsSupport: true
 
   EC2Subnet:
-    Type: "AWS::EC2::Subnet"
+    Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref EC2Vpc
       CidrBlock: "10.0.1.0/24"
       AvailabilityZone: !Select [0, !GetAZs ""]
-    DependsOn: EC2Vpc
 
   EC2InternetGateway:
-    Type: "AWS::EC2::InternetGateway"
+    Type: AWS::EC2::InternetGateway
 
   EC2GatewayAttachment:
-    Type: "AWS::EC2::VPCGatewayAttachment"
+    Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref EC2Vpc
       InternetGatewayId: !Ref EC2InternetGateway
-    DependsOn:
-      - EC2Vpc
-      - EC2InternetGateway
 
   EC2RouteTable:
-    Type: "AWS::EC2::RouteTable"
+    Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref EC2Vpc
 
   EC2Route:
-    Type: "AWS::EC2::Route"
+    Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref EC2RouteTable
       DestinationCidrBlock: "0.0.0.0/0"
       GatewayId: !Ref EC2InternetGateway
 
   EC2SubnetRouteTableAssociation:
-    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref EC2Subnet
       RouteTableId: !Ref EC2RouteTable
 
-  EC2Instancia:
-    Type: "AWS::EC2::Instance"
-    Properties:
-      InstanceType: t2.medium
-      ImageId: ami-0c55b159cbfafe1f0
-      KeyName: ChaveSSH # Alterar
-      SecurityGroups:
-        - !Ref EC2GrupoSeguranca
-      BlockDeviceMappings:
-        - DeviceName: /dev/sda1
-          Ebs:
-            VolumeSize: 20
-      Tags:
-        - Key: Name
-          Value: discharge-ec2-aws
-      SubnetId: !Ref EC2Subnet
-      NetworkInterfaces:
-        - AssociatePublicIpAddress: true
-          DeviceIndex: 0
-          SubnetId: !Ref EC2Subnet
-
+  # Configurações dos Grupos de Segurança
   EC2GrupoSeguranca:
-    Type: "AWS::EC2::SecurityGroup"
+    Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Acesso liberado para SSH e portas do projeto Discharge
+      VpcId: !Ref EC2Vpc
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: "22"
@@ -90,3 +74,21 @@ Resources:
           FromPort: "8080"
           ToPort: "8080"
           CidrIp: "0.0.0.0/0"
+
+  # Configurações da EC2
+  EC2Instancia:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.medium
+      ImageId: ami-0866a3c8686eaeeba
+      KeyName: !Ref KeyName 
+      SecurityGroupIds:
+        - !Ref EC2GrupoSeguranca
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 20
+      Tags:
+        - Key: Name
+          Value: discharge-ec2-aws
+      SubnetId: !Ref EC2Subnet  
