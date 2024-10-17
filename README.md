@@ -115,5 +115,7 @@ No arquivo main.yaml é possível visualizar as configurações necessárias par
 *Necessário apenas a criação de uma pilha(stack)
 
 EC2 (Definições de Hardware e Acesso)
+
 Grupos de Segurança (Liberação de portas do projeto)
+
 VPC (Com as demais configurações para o seu acesso)
