@@ -19,6 +19,7 @@ Resources:
       VpcId: !Ref EC2Vpc
       CidrBlock: "10.0.1.0/24"
       AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: true
 
   EC2InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -81,14 +82,14 @@ Resources:
     Properties:
       InstanceType: t2.medium
       ImageId: ami-0866a3c8686eaeeba
-      KeyName: !Ref KeyName 
+      KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref EC2GrupoSeguranca
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
             VolumeSize: 20
+      SubnetId: !Ref EC2Subnet
       Tags:
         - Key: Name
           Value: discharge-ec2-aws
-      SubnetId: !Ref EC2Subnet  
