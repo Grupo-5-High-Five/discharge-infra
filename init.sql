@@ -1,7 +1,3 @@
--- DROP DATABASE IF EXISTS discharge;
-CREATE DATABASE IF NOT EXISTS discharge;
-USE discharge;
-
 CREATE TABLE IF NOT EXISTS empresa (
 idEmpresa 				INT 			AUTO_INCREMENT COMMENT 'Identificador único da empresa', 
 nome_fantasia 			VARCHAR(45) 	NOT NULL COMMENT 'Nome fantasia da empresa',
@@ -28,17 +24,17 @@ FOREIGN KEY ForeignKey_fkEmpresa (fkEmpresa) REFERENCES empresa (idEmpresa)
 ) COMMENT 'Tabela que armazena informações de Funcionários';
 
 CREATE TABLE IF NOT EXISTS leitura (
-    idLeitura INT NOT NULL AUTO_INCREMENT COMMENT 'Identificador único da leitura',
-    data DATETIME NOT NULL COMMENT 'Data e horário da leitura',
-    consumo DECIMAL(6,3) NOT NULL COMMENT 'Valor do consumo de energia da metálurgica',
-    potenciaReativaAtrasada DECIMAL(6,3) NOT NULL COMMENT 'Valor de potência reativa atrasada em kVarh',
-    potenciaReativaAdiantada DECIMAL(6,3) NOT NULL COMMENT 'Valor de potência reativa adiantada em kVarh',
-    emissao DECIMAL(6,3) NOT NULL COMMENT 'Valor da emissão de gases CO2',
-    fatorPotenciaAtrasado DECIMAL(6,3) NOT NULL COMMENT 'Fator de potência atrasada',
-    fatorPotenciaAdiantado DECIMAL(6,3) NOT NULL COMMENT 'Fator de potência adiantada',
-    statusSemana VARCHAR(255) NOT NULL COMMENT 'Informativo do dia, Dia de Semana ou Final de semana',
-    diaSemana VARCHAR(255) NOT NULL COMMENT 'Dia da semana que foi realizado a leitura',
-    fkEmpresa INT NOT NULL COMMENT 'Chave estrangeira que referencia a empresa à qual o funcionário pertence',
+idLeitura INT NOT NULL AUTO_INCREMENT COMMENT 'Identificador único da leitura',
+data DATETIME NOT NULL COMMENT 'Data e horário da leitura',
+consumo DECIMAL(6,3) NOT NULL COMMENT 'Valor do consumo de energia da metálurgica',
+potenciaReativaAtrasada DECIMAL(6,3) NOT NULL COMMENT 'Valor de potência reativa atrasada em kVarh',
+potenciaReativaAdiantada DECIMAL(6,3) NOT NULL COMMENT 'Valor de potência reativa adiantada em kVarh',
+emissao DECIMAL(6,3) NOT NULL COMMENT 'Valor da emissão de gases CO2',
+fatorPotenciaAtrasado DECIMAL(6,3) NOT NULL COMMENT 'Fator de potência atrasada',
+fatorPotenciaAdiantado DECIMAL(6,3) NOT NULL COMMENT 'Fator de potência adiantada',
+statusSemana VARCHAR(255) NOT NULL COMMENT 'Informativo do dia, Dia de Semana ou Final de semana',
+diaSemana VARCHAR(255) NOT NULL COMMENT 'Dia da semana que foi realizado a leitura',
+fkEmpresa INT NOT NULL COMMENT 'Chave estrangeira que referencia a empresa à qual o funcionário pertence',
 PRIMARY KEY (idLeitura),
 FOREIGN KEY ForeignKey_fkEmpresa (fkEmpresa) REFERENCES empresa (idEmpresa)
 ) COMMENT 'Tabela que armazena as leituras de dados de cada empresa';
