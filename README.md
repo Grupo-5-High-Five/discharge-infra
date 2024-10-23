@@ -7,6 +7,7 @@
 3. [Estrutura do Repositório](#estrutura-do-repositório)
 4. [Configuração do Docker Compose](#configuração-do-docker-compose)
 5. [Configuração do CloudFormation](#configuração-do-cloudformation)
+6. [Configuração do Shell Script](#configuração-do-shell-script)
 
 ## Descrição do Projeto
 
@@ -15,15 +16,17 @@ Este repositório contém as configurações para implantar a infraestrutura uti
 ## Tecnologias Utilizadas
 
 - [Docker](https://www.docker.com/)
-- [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
 - [MySQL](https://www.mysql.com/)
+- [Shell Script](https://www.devmedia.com.br/introducao-ao-shell-script-no-linux/25778)
+- [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
 
 ## Estrutura do Repositório
 
 ```
 ├── docker-compose.yml
-├── main.yaml
-└── init.sql
+├── init.sql
+├── install.sh
+└── main.yaml
 ```
 
 ## Configuração do Docker Compose
@@ -111,11 +114,14 @@ Roda a aplicação Web com o NodeJS e visualiza informações vindas do banco de
 
 ## Configuração do CloudFormation
 
-No arquivo main.yaml é possível visualizar as configurações necessárias para que o projeto seja executado na AWS. Dessa forma, é automatizado a criação da EC2 e suas demais configurações.
-\*Necessário apenas a criação de uma pilha(stack)
+No arquivo main.yaml é possível visualizar as configurações necessárias para que o projeto seja executado na AWS. Dessa forma, é automatizado a criação da EC2 e suas demais configurações. \*Necessário apenas a criação de uma pilha(stack)
 
 EC2 (Definições de Hardware e Acesso)
 
 Grupos de Segurança (Liberação de portas do projeto)
 
 VPC (Com as demais configurações para o seu acesso)
+
+## Configuração do Shell Script
+
+No arquivo install.sh, está as configurações essenciais para o Ubuntu Server que está instalado na EC2 criada pelo CloudFormattion. O Script de instalação, atualiza os pacotes do Linux, baixa o Docker-Compose e roda todos os containers de forma automatizada, sendo necessário a inicialização do arquivo.
