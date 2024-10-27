@@ -15,6 +15,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
   # JDK 21 + Alpine
   backend:
     image: eclipse-temurin:21-jdk-alpine
@@ -25,9 +26,9 @@ services:
       DB_USER: db_user
       DB_PASSWORD: 123
       # Acesso ao S3
-    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-    AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
     working_dir: /app
     command: >
       /bin/sh -c "
@@ -38,6 +39,7 @@ services:
       - "5555:5555"
     depends_on:
       - db
+
   # Node.js + Alpine
   frontend:
     image: node:20.18.0-alpine
