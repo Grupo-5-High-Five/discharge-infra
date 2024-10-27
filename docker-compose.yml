@@ -8,7 +8,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123
       MYSQL_DATABASE: discharge
-      MYSQL_USER: db_user
+      MYSQL_USER: joao
       MYSQL_PASSWORD: 123
     ports:
       - "3306:3306"
@@ -25,9 +25,9 @@ services:
       DB_USER: db_user
       DB_PASSWORD: 123
       # Acesso ao S3
-      AWS_ACCESS_KEY_ID:
-      AWS_SECRET_ACCESS_KEY:
-      AWS_SESSION_TOKEN:
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
     working_dir: /app
     command: >
       /bin/sh -c "
@@ -46,7 +46,7 @@ services:
       AMBIENTE_PROCESSO: desenvolvimento
       DB_HOST: db
       DB_DATABASE: discharge
-      DB_USER: db_user
+      DB_USER: joao
       DB_PASSWORD: 123
       DB_PORT: 3306
       APP_PORT: 3333
