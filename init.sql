@@ -62,6 +62,6 @@ VALUES ('SteelForge', 'contato@steelforge.com', '1234567890', '12.345.678/0001-9
 
 -- Inserir dois funcionários para a empresa SteelForge
 INSERT INTO funcionario (nome, email, cpf, cargo, senha, statusFuncionario, fkEmpresa)
-VALUES ('João Silva', 'joao.silva@steelforge.com', '123.456.789-10', 'gerente', 'senha123', 'ativo', 1),
-       ('Maria Oliveira', 'maria.oliveira@steelforge.com', '987.654.321-00', 'funcionario', 'senha456', 'ativo', 1);
+VALUES ('João Capa', 'joao.silva@steelforge.com', '12345678910', 'gerente', 'senha123', 'ativo', 1),
+       ('Gustavo Gelow Agach', 'maria.oliveira@steelforge.com', '98765432100', 'funcionario', 'senha456', 'ativo', 1);
 
