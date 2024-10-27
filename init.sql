@@ -57,3 +57,11 @@ PRIMARY KEY (idMetricas),
 FOREIGN KEY ForeignKey_fkEmpresa (fkEmpresa) REFERENCES empresa (idEmpresa)
 ) COMMENT 'Tabela que armazena o métricas de cada empresa';
 
+INSERT INTO empresa (nome_fantasia, email, telefone, cnpj, cep, statusEmpresa)
+VALUES ('SteelForge', 'contato@steelforge.com', '1234567890', '12.345.678/0001-90', '12345-678', 'ativo');
+
+-- Inserir dois funcionários para a empresa SteelForge
+INSERT INTO funcionario (nome, email, cpf, cargo, senha, statusFuncionario, fkEmpresa)
+VALUES ('João Silva', 'joao.silva@steelforge.com', '123.456.789-10', 'gerente', 'senha123', 'ativo', 1),
+       ('Maria Oliveira', 'maria.oliveira@steelforge.com', '987.654.321-00', 'funcionario', 'senha456', 'ativo', 1);
+
