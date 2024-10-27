@@ -23,7 +23,7 @@ services:
     environment:
       # Acesso ao Container DB
       DB_URL: jdbc:mysql://db/discharge
-      DB_USER: db_user
+      DB_USER: root
       DB_PASSWORD: 123
       # Acesso ao S3
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
