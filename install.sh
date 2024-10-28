@@ -20,7 +20,8 @@ AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
 EOF
 
 sudo apt install docker.io -y
-sudo apt install unzip curl -y  
+sudo apt install docker-compose -y
+sudo apt install unzip curl -y 
 
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -30,7 +31,7 @@ sudo docker-compose up -d
 
 docker ps -a
 
-CRON="* * * * * docker start java_container && docker logs java_container > /tmp/logs.txt && aws s3 cp /tmp/logs.txt s3://discharge-bucket/log_\$(date +\%Y-\%m-\%d_\%H-\%M-\%S).log && rm /tmp/logs.txt"
+CRON="* 1 * * * docker start java_container && docker logs java_container > /tmp/logs.txt && aws s3 cp /tmp/logs.txt s3://discharge-bucket/log_\$(date +\%Y-\%m-\%d_\%H-\%M-\%S).log && rm /tmp/logs.txt"
 
 if crontab -l | grep -Fxq "$CRON"
 then
