@@ -88,7 +88,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: 20
+            VolumeSize: 30
       SubnetId: !Ref EC2Subnet
       Tags:
         - Key: Name
