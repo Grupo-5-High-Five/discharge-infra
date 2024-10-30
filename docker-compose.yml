@@ -53,6 +53,8 @@ services:
       DB_PORT: 3306
       APP_PORT: 3333
       APP_HOST: localhost
+      MEU_EMAIL: atendimentohighfive@gmail.com
+      MINHA_SENHA: upcyjphafxzzoslh
     working_dir: /app
     command: >
       /bin/sh -c "
