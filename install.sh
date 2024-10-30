@@ -29,9 +29,9 @@ sudo ./aws/install
 
 sudo docker-compose up -d
 
-docker ps -a
+sudo docker ps -a
 
-CRON="* 1 * * * docker start java_container && docker logs java_container > /tmp/logs.txt && aws s3 cp /tmp/logs.txt s3://discharge-bucket/log_\$(date +\%Y-\%m-\%d_\%H-\%M-\%S).log && rm /tmp/logs.txt"
+CRON="* * * * * docker start java_container && docker ps -a >> /tmp/cron.log 2>&1 && docker logs java_container > /tmp/logs.txt && /usr/local/bin/aws s3 cp /tmp/logs.txt s3://discharge-bucket/log_$(date +\%Y-\%m-\%d_\%H-\%M-\%S).log && rm /tmp/logs.txt >> /tmp/cron.log 2>&1"
 
 if crontab -l | grep -Fxq "$CRON"
 then
