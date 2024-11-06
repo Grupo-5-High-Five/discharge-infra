@@ -1,7 +1,7 @@
-# Parâmetro com o nome da Chave de Acesso a EC2
 Parameters:
+  # Parâmetro com o nome da Chave de Acesso a EC2
   KeyName:
-    Description: "Insira a chave de acesso:"
+    Description: "Insira a chave de acesso (sem a extensao .pem):"
     Type: String
 
 Resources:
@@ -80,7 +80,7 @@ Resources:
   EC2Instancia:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t2.medium
+      InstanceType: t2.large
       ImageId: ami-0866a3c8686eaeeba
       KeyName: !Ref KeyName
       SecurityGroupIds:
@@ -90,6 +90,7 @@ Resources:
           Ebs:
             VolumeSize: 30
       SubnetId: !Ref EC2Subnet
+      IamInstanceProfile: LabInstanceProfile
       Tags:
         - Key: Name
           Value: discharge-ec2-aws
