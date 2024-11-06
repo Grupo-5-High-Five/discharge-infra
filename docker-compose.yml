@@ -11,6 +11,23 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: 123
     restart: always
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysql",
+          "-u",
+          "root",
+          "-p123",
+          "-h",
+          "127.0.0.1",
+          "-e",
+          "SHOW DATABASES;",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     ports:
       - "3306:3306"
     volumes:
@@ -33,7 +50,8 @@ services:
     ports:
       - "5555:5555"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   # Node.js + Alpine
   frontend:
@@ -54,7 +72,8 @@ services:
     ports:
       - "3333:3333"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   db_data:
