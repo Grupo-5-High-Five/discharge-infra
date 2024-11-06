@@ -20,7 +20,7 @@ EOF
 
 # Instale o Docker e o Docker Compose
 sudo apt install docker.io -y
-sudo apt install unzip curl -y  
+sudo apt install unzip curl -y
 sudo apt install docker-compose -y
 
 # Instale o AWS CLI
