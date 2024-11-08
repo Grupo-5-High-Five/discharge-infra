@@ -5,7 +5,7 @@
 1. [Descrição do Projeto](#descrição-do-projeto)
 2. [Tecnologias Utilizadas](#tecnologias-utilizadas)
 3. [Estrutura do Repositório](#estrutura-do-repositório)
-4. [Configurações das Imagens (Dockerfiles)](<#configuração-das-imagens-(dockerfiles)>)
+4. [Configurações das Imagens Dockerfiles](#configurações-das-imagens-dockerfiles)
 5. [Configuração do Docker Compose](#configuração-do-docker-compose)
 6. [Configuração do CloudFormation](#configuração-do-cloudformation)
 7. [Configuração do Shell Script](#configuração-do-shell-script)
@@ -35,7 +35,7 @@ Este repositório contém as configurações para implantar a infraestrutura uti
 ├── main.yaml
 ```
 
-## Configurações das Imagens (Dockerfiles)
+## Configurações das Imagens Dockerfiles
 
 Os Dockerfiles estão sendo utilizados para criar a imagens de Java e Node que estão armazenadas em um DockerHub para que seja possível a criação de contianers com imagens personalizadas de acordo com o projeto Discharge
 
