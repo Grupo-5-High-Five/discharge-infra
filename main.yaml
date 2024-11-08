@@ -94,3 +94,16 @@ Resources:
       Tags:
         - Key: Name
           Value: discharge-ec2-aws
+
+  # Cria um IP elástico
+  EC2ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  # Associa o IP elástico à instância EC2
+  EC2EIPAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      InstanceId: !Ref EC2Instancia
+      EIP: !Ref EC2ElasticIP
