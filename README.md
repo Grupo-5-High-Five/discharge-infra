@@ -5,7 +5,7 @@
 1. [Descrição do Projeto](#descrição-do-projeto)
 2. [Tecnologias Utilizadas](#tecnologias-utilizadas)
 3. [Estrutura do Repositório](#estrutura-do-repositório)
-4. [Configurações das Imagens (Dockerfiles)](#configuração-das-imagens-dockerfiles)
+4. [Configurações das Imagens (Dockerfiles)](<#configuração-das-imagens-(dockerfiles)>)
 5. [Configuração do Docker Compose](#configuração-do-docker-compose)
 6. [Configuração do CloudFormation](#configuração-do-cloudformation)
 7. [Configuração do Shell Script](#configuração-do-shell-script)
