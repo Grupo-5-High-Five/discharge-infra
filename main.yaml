@@ -3,6 +3,9 @@ Parameters:
   KeyName:
     Description: "Insira a chave de acesso (sem a extensao .pem):"
     Type: String
+  EC2ElasticIP:
+    Description: "Insira o ID do seu IP Elástico"
+    Type: String
 
 Resources:
   # Criação e configuração de rede VPC
@@ -95,15 +98,9 @@ Resources:
         - Key: Name
           Value: discharge-ec2-aws
 
-  # Cria um IP elástico
-  EC2ElasticIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-
   # Associa o IP elástico à instância EC2
   EC2EIPAssociation:
     Type: AWS::EC2::EIPAssociation
     Properties:
       InstanceId: !Ref EC2Instancia
-      EIP: !Ref EC2ElasticIP
+      AllocationId: !Ref EC2ElasticIP
