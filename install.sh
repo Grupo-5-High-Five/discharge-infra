@@ -18,6 +18,12 @@ while [ -z "$AWS_SESSION_TOKEN" ]; do
     echo "AWS_SESSION_TOKEN não pode ser vazio. Por favor, insira novamente."
     read -p "Insira o AWS_SESSION_TOKEN: " AWS_SESSION_TOKEN
 done
+
+read -p "Insira o TOKEN (SLACK): " TOKEN
+while [ -z "$AWS_SESSION_TOKEN" ]; do
+    echo "TOKEN não pode ser vazio. Por favor, insira novamente."
+    read -p "Insira o TOKEN (SLACK): " TOKEN
+done
 sudo apt update && sudo apt upgrade -y
 
 mkdir -p app
@@ -29,6 +35,7 @@ cat <<EOF > .env
 AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
 AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+TOKEN=${TOKEN}
 EOF
 
 # Instale o Docker e o Docker Compose
