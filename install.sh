@@ -1,15 +1,28 @@
 #!/bin/sh
 
-AWS_ACCESS_KEY_ID=""
-AWS_SECRET_ACCESS_KEY="" 
-AWS_SESSION_TOKEN=""
+# Credenciais da AWS
+read -p "Insira o AWS_ACCESS_KEY_ID: " AWS_ACCESS_KEY_ID
+while [ -z "$AWS_ACCESS_KEY_ID" ]; do
+    echo "AWS_ACCESS_KEY_ID não pode ser vazio. Por favor, insira novamente."
+    read -p "Insira o AWS_ACCESS_KEY_ID: " AWS_ACCESS_KEY_ID
+done
+
+read -p "Insira o AWS_SECRET_ACCESS_KEY: " AWS_SECRET_ACCESS_KEY
+while [ -z "$AWS_SECRET_ACCESS_KEY" ]; do
+    echo "AWS_SECRET_ACCESS_KEY não pode ser vazio. Por favor, insira novamente."
+    read -p "Insira o AWS_SECRET_ACCESS_KEY: " AWS_SECRET_ACCESS_KEY
+done
+
+read -p "Insira o AWS_SESSION_TOKEN: " AWS_SESSION_TOKEN
+while [ -z "$AWS_SESSION_TOKEN" ]; do
+    echo "AWS_SESSION_TOKEN não pode ser vazio. Por favor, insira novamente."
+    read -p "Insira o AWS_SESSION_TOKEN: " AWS_SESSION_TOKEN
+done
 sudo apt update && sudo apt upgrade -y
 
 mkdir -p app
 cd app
-
 git clone https://github.com/Grupo-5-High-Five/discharge-infra.git
-
 cd discharge-infra/
 
 cat <<EOF > .env
