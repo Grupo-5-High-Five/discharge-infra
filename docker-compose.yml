@@ -25,7 +25,7 @@ services:
 
   # JDK 21 + Alpine
   backend:
-    image: zapss/discharge-jdk:1.0
+    image: zapss/discharge-jdk:latest
     container_name: java_container
     environment:
       # Acesso ao Container DB
@@ -44,7 +44,7 @@ services:
 
   # Node.js + Alpine
   frontend:
-    image: zapss/discharge-nodejs:1.0
+    image: zapss/discharge-nodejs:latest
     container_name: node_container
     environment:
       AMBIENTE_PROCESSO: desenvolvimento
