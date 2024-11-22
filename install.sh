@@ -20,10 +20,11 @@ while [ -z "$AWS_SESSION_TOKEN" ]; do
 done
 
 read -p "Insira o TOKEN (SLACK): " TOKEN
-while [ -z "$AWS_SESSION_TOKEN" ]; do
+while [ -z "$TOKEN" ]; do
     echo "TOKEN não pode ser vazio. Por favor, insira novamente."
     read -p "Insira o TOKEN (SLACK): " TOKEN
 done
+
 sudo apt update && sudo apt upgrade -y
 
 mkdir -p app
@@ -54,13 +55,12 @@ sudo docker-compose up -d
 # Liste os containers em execução
 sudo docker ps -a
 
-# Configure o cron para rodar o container e enviar logs para o S3
-CRON="* * * * * sudo docker start java_container && sudo docker logs java_container > /tmp/logs.txt && aws s3 cp /tmp/logs.txt s3://discharge-bucket/log_$(date +'%Y-%m-%d_%H-%M-%S').log && rm /tmp/logs.txt"
+# Limpe as entradas do crontab
+crontab -r
 
-# Adicione a entrada ao crontab, se não existir
-if crontab -l | grep -Fxq "$CRON"; then
-    echo "Crontab já existe."
-else
-    (crontab -l; echo "$CRON") | crontab -
-    echo "Crontab adicionado: $CRON"
-fi
+# Configure o cron para rodar o container e enviar logs para o S3
+CRON="* * * * * sudo docker start java_container && sudo docker wait java_container && sudo docker logs java_container > /tmp/logs.txt && aws s3 cp /tmp/logs.txt s3://discharge-bucket/log_$(uuidgen).log && rm /tmp/logs.txt"
+
+# Adicione a nova entrada ao crontab
+echo "$CRON" | crontab -
+echo "Crontab limpo e nova entrada adicionada: $CRON"
