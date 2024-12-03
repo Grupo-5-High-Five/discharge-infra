@@ -59,7 +59,7 @@ sudo docker ps -a
 crontab -r
 
 # Configure o cron para rodar o container e enviar logs para o S3
-CRON="* * * * * sudo docker start java_container && sudo docker wait java_container && sudo docker logs java_container > /tmp/logs.txt && aws s3 cp /tmp/logs.txt s3://discharge-bucket/log_$(uuidgen).log && rm /tmp/logs.txt && sudo truncate -s 0 /var/lib/docker/containers/$(docker inspect --format='{{.Id}}' java_container)/$(docker inspect --format='{{.Id}}' java_container)-json.log"
+CRON="* * * * * sudo docker start java_container && sudo docker wait java_container && sudo docker logs java_container > /tmp/logs.txt && aws s3 cp /tmp/logs.txt s3://discharge-bucket/log_$(date +\%Y\%m\%d\%H\%M\%S).log && rm /tmp/logs.txt && sudo truncate -s 0 /var/lib/docker/containers/$(docker inspect --format='{{.Id}}' java_container)/$(docker inspect --format='{{.Id}}' java_container)-json.log"
 
 # Adicione a nova entrada ao crontab
 echo "$CRON" | crontab -
