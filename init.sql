@@ -140,3 +140,12 @@ VALUES ("João preciso da lista de equipamentos necessários para compra", 2, 1)
        ("Giovanna entre em contato comigo, precisamos discutir sobre as medidas", 4, 1),
        ("João não esqueça de abordar comigo a questão do gráfico de tendência", 4, 1),
        ("Preciso de um relatório do consumo da Semana até Sexta-feira", 5, 1);
+       
+UPDATE metrica 
+SET     co2_maximo_anual = 500,
+        consumo_maximo_mensal = 2000,
+        potencia_reativa_atrasada_maxima_semanal = 150,
+        potencia_reativa_adiantada_maxima_semanal = 150,
+        fator_potencia_atrasado_maxima_diario = 92,
+        fator_potencia_adiantado_maxima_diario = 92
+WHERE fkempresa = 1;
