@@ -18,11 +18,11 @@ CREATE TABLE IF NOT EXISTS funcionario (
     nome                                VARCHAR(50)         NOT NULL                            COMMENT 'Nome do funcionário', 
     email                               VARCHAR(345)        NOT NULL UNIQUE                     COMMENT 'Email do funcionário, deve ser único',
     cpf                                 CHAR(11)            NOT NULL UNIQUE                     COMMENT 'CPF do funcionário, deve ser único',
-    cargo                               VARCHAR(10)         NOT NULL DEFAULT "admin"            COMMENT 'Tipo de funcionário (admin, eficiencia, consumo), para permissionamentos',
+    cargo                               VARCHAR(11)         NOT NULL DEFAULT "admin"            COMMENT 'Tipo de funcionário (admin, eficiencia, consumo), para permissionamentos',
     senha                               VARCHAR(16)         NOT NULL                            COMMENT 'Senha do funcionário, com limite de 16 caracteres',
     status_funcionario                  VARCHAR(7)          DEFAULT 'ativo'                     COMMENT 'Status do funcionário',
     fkempresa                           INT                                                     COMMENT 'Chave estrangeira que referencia a empresa à qual o funcionário pertence',
-    CONSTRAINT chk_cargo CHECK(cargo IN ("admin", "eficiencia", "consumo")),
+    CONSTRAINT chk_cargo CHECK(cargo IN ("admin", "eletricista", "financeiro")),
     PRIMARY KEY (id, fkempresa),
     FOREIGN KEY ForeignKey_fkEmpresa (fkempresa) REFERENCES empresa (id)
 ) COMMENT 'Tabela que armazena informações de Funcionários';
@@ -53,16 +53,17 @@ CREATE TABLE IF NOT EXISTS historico_mensagens(
 ) COMMENT 'Tabela que armazena o histórico de mensagens da empresa';
 
 CREATE TABLE IF NOT EXISTS metrica (
-    id                                  INT                 AUTO_INCREMENT                      COMMENT 'Identificador único de métricas de cada empresa',
-    consumo_maximo                      VARCHAR(45)                                            COMMENT 'Métrica de Consumo máximo antes do alerta',
-    desperdicio_maximo                  VARCHAR(45)                                            COMMENT 'Métrica de Desperdício máximo da metalurgica',
-    co2_maximo                          VARCHAR(45)                                            COMMENT 'Métrica de CO2 máxima antes do alerta',
-    potencia_reativa_atrasada_maxima    VARCHAR(45)                                            COMMENT 'Métrica de Potência Reativa Atrasada máxima antes do alerta',
-    potencia_reativa_adiantada_maxima   VARCHAR(45)                                            COMMENT 'Métrica de Potência Reativa Adiantada máxima antes do alerta',
-    fkempresa                           INT                 NOT NULL                            COMMENT 'Chave estrangeira que referencia a empresa à qual o funcionário pertence',
+    id 											INT 			AUTO_INCREMENT 					COMMENT 'Identificador único de métricas de cada empresa',    
+    co2_maximo_anual 							FLOAT 			       							COMMENT 'Métrica de CO2 máxima antes do alerta',
+    consumo_maximo_mensal 						FLOAT			     							COMMENT 'Métrica de Consumo máximo antes do alerta',
+    potencia_reativa_atrasada_maxima_semanal 	FLOAT 			 								COMMENT 'Potência Reativa Atrasada máxima semanal antes do alerta',
+    potencia_reativa_adiantada_maxima_semanal 	FLOAT 			 								COMMENT 'Potência Reativa Adiantada máxima semanal antes do alerta',
+    fator_potencia_atrasado_maxima_diario		FLOAT 			 								COMMENT 'Fator de Potência Reativo Atrasado máximo diário antes do alerta',
+    fator_potencia_adiantado_maxima_diario 		FLOAT 			 								COMMENT 'Fator de Potência Reativo Adiantado máximo diário antes do alerta',
+    fkempresa 									INT 			 								COMMENT 'Chave estrangeira para a empresa',
     PRIMARY KEY (id),
-    FOREIGN KEY ForeignKey_fkEmpresa (fkempresa) REFERENCES empresa (id)
-) COMMENT 'Tabela que armazena o métricas de cada empresa';
+    CONSTRAINT ForeignKey_fkEmpresa  FOREIGN KEY (fkempresa) REFERENCES empresa (id)
+) COMMENT = 'Tabela que armazena as métricas de cada empresa';
 
 CREATE TABLE IF NOT EXISTS tokens_recuperacao (
     id                                  INT                 AUTO_INCREMENT                      COMMENT 'Identificador único de métricas de cada token',
@@ -75,14 +76,43 @@ CREATE TABLE IF NOT EXISTS tokens_recuperacao (
 
 CREATE TABLE IF NOT EXISTS anotacoes (
     id                                  INT                 AUTO_INCREMENT                      COMMENT 'Identificardor único das anotações',
-    titulo                              VARCHAR(45)         NOT NULL                            COMMENT 'Título da anotação feita pelo usuário',
     texto                               VARCHAR(255)        NOT NULL                            COMMENT 'Texto na anotação feita pelo usuário',
     fkfuncionario                       INT                 NOT NULL                            COMMENT 'Chave estrangeira que referencia o funcionário que realizou a anotação',
     fkempresa                           INT                 NULL                                COMMENT 'Chave estrangeira que referencia a empresa à qual o funcionário pertence',
+    dt_criacao                          DATETIME            DEFAULT now()                       COMMENT 'Chave estrangeira que referencia a empresa à qual o funcionário pertence',
     PRIMARY KEY (id),
     FOREIGN KEY ForeignKey_fkEmpresa (fkempresa) REFERENCES empresa (id),
     FOREIGN KEY ForeignKey_fkFuncionario (fkfuncionario) REFERENCES funcionario (id)
 ) COMMENT 'Tabela que armazena as anotações realizadas pelos funcionários de determinada empresa';
+
+DELIMITER $$
+
+CREATE TRIGGER after_empresa_insert
+AFTER INSERT ON empresa
+FOR EACH ROW
+BEGIN
+    -- Inserir métricas padrão para a nova empresa
+    INSERT INTO metrica (
+        co2_maximo_anual,
+        consumo_maximo_mensal,
+        potencia_reativa_atrasada_maxima_semanal,
+        potencia_reativa_adiantada_maxima_semanal,
+        fator_potencia_atrasado_maxima_diario,
+        fator_potencia_adiantado_maxima_diario,
+        fkempresa
+    ) VALUES (
+        0,  
+        0, 
+        0,  
+        0,  
+        0,     
+        0,     
+        NEW.id      
+    );
+END$$
+
+DELIMITER ;
+
 
 -- Inserir empresa SteelForge
 INSERT INTO empresa (nome_fantasia, email, telefone, cnpj, cep, status_empresa)
@@ -90,5 +120,23 @@ VALUES ('SteelForge', 'contato@steelforge.com', '1234567890', '12345678000190', 
 
 -- Inserir dois funcionários para a empresa SteelForge
 INSERT INTO funcionario (nome, email, cpf, cargo, senha, status_funcionario, fkempresa)
-VALUES ('João Silva', 'joao.silva@steelforge.com', '12345678910', 'admin', '123', 'ativo', 1),
-       ('Gustavo Luz', 'gustavo.luz@steelforge.com', '98765432100', 'consumo', '123', 'ativo', 1);
+VALUES ('João Pedro', 'joao.pedro@steelforge.com', '12345678910', 'eletricista', '123', 'ativo', 1),
+	   ('Isaías Oliveira', 'isaias.oliveira@steelforge.com', '12745678910', 'financeiro', '123', 'ativo', 1),
+	   ('Giovanna Beltrão', 'giovanna.beltrao@steelforge.com', '12355678910', 'eletricista', '123', 'ativo', 1),
+	   ('Pedro Jesus', 'pedro.jesus@steelforge.com', '12345671910', 'financeiro', '123', 'ativo', 1),
+       ('Gustavo Luz', 'gustavo.luz@steelforge.com', '98765432100', 'admin', '123', 'ativo', 1);
+
+INSERT INTO anotacoes (texto, fkfuncionario) 
+VALUES ("Não esquecer de verificar com a Giovanna os relatórios de Potência Reativa", 1),
+       ("Verificar parâmetros de Consumo de Energia", 1),
+       ("Não esquecer de orientar Isaías do itens a comprar para manutenção de equipamento", 1),
+       ("URGENTE: Olhar detalhamento semanal da energia com Pedro", 1),
+       ("Não esquecer de verificar com Gustavo Luz do permissionamento", 1),
+       ("Entrar em contato com a diretoria para rever métricas de Emissão", 1);
+
+INSERT INTO anotacoes (texto, fkfuncionario, fkempresa) 
+VALUES ("João preciso da lista de equipamentos necessários para compra", 2, 1),
+       ("Isaías consegue me fornecer um relatório do Status financeiro", 3, 1),
+       ("Giovanna entre em contato comigo, precisamos discutir sobre as medidas", 4, 1),
+       ("João não esqueça de abordar comigo a questão do gráfico de tendência", 4, 1),
+       ("Preciso de um relatório do consumo da Semana até Sexta-feira", 5, 1);
