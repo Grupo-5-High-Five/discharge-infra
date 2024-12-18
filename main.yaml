@@ -88,7 +88,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.large
-      ImageId: ami-05268bf73fd77c400
+      ImageId: ami-0d38508a932b405bb
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref EC2GrupoSeguranca
