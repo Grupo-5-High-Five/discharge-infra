@@ -2,6 +2,8 @@ DROP DATABASE IF EXISTS discharge;
 CREATE DATABASE IF NOT EXISTS discharge;
 USE discharge;
 
+ALTER DATABASE discharge CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
 CREATE TABLE IF NOT EXISTS empresa (
     id                                  INT                 AUTO_INCREMENT                      COMMENT 'Identificador único da empresa', 
     nome_fantasia                       VARCHAR(45)         NOT NULL                            COMMENT 'Nome fantasia da empresa',
@@ -113,7 +115,6 @@ END$$
 
 DELIMITER ;
 
-
 -- Inserir empresa SteelForge
 INSERT INTO empresa (nome_fantasia, email, telefone, cnpj, cep, status_empresa)
 VALUES ('SteelForge', 'contato@steelforge.com', '1234567890', '12345678000190', '12345678', 'ativo');
@@ -143,7 +144,7 @@ VALUES ("João preciso da lista de equipamentos necessários para compra", 2, 1)
        
 UPDATE metrica 
 SET     co2_maximo_anual = 500,
-        consumo_maximo_mensal = 2000,
+        consumo_maximo_mensal = 15000,
         potencia_reativa_atrasada_maxima_semanal = 150,
         potencia_reativa_adiantada_maxima_semanal = 150,
         fator_potencia_atrasado_maxima_diario = 92,
