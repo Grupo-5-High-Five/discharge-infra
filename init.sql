@@ -4,6 +4,10 @@ USE discharge;
 
 ALTER DATABASE discharge CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
+SET character_set_client = 'utf8mb4';
+SET character_set_connection = 'utf8mb4';
+SET character_set_results = 'utf8mb4';
+
 CREATE TABLE IF NOT EXISTS empresa (
     id                                  INT                 AUTO_INCREMENT                      COMMENT 'Identificador único da empresa', 
     nome_fantasia                       VARCHAR(45)         NOT NULL                            COMMENT 'Nome fantasia da empresa',
